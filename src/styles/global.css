@@ -23,12 +23,13 @@
 a {
 	text-decoration: none;
 	transition-duration: 0.3s;
+	color: black;
 }
 
 a:hover {
-	color:blue
-
+	color: blue;
 }
+
 
 body {
 	font-family: Helvetica;
