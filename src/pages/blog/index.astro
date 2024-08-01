@@ -20,10 +20,6 @@ const posts = (await getCollection('blog')).sort(
 				width: 960px;
 			}
 			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
@@ -31,7 +27,6 @@ const posts = (await getCollection('blog')).sort(
 				width: calc(50% - 1rem);
 			}
 			ul li * {
-				text-decoration: none;
 				transition: 0.2s ease;
 			}
 			ul li:first-child {
@@ -94,7 +89,6 @@ const posts = (await getCollection('blog')).sort(
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.slug}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />
