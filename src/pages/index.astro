@@ -17,32 +17,74 @@ const posts = (await getCollection('blog')).sort(
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				width: 720px;
 			}
 			ul {
-				margin: 0;
+				margin: 0.5 0em;
 				padding: 0;
 			}
 			ul li {
-				width: calc(50% - 1rem);
+
 				list-style-type: none;
-			}
-			ul li * {
-				transition: 0.2s ease;
+				margin: 0;
+				padding: 0;
+
 			}
 
-			ul li a {
-				display: block;
-			}
 			.title {
-				margin: 0;
-				color: rgb(var(--black));
+				margin: 0;;
 				line-height: 1;
 			}
 			.date {
 				margin: 0;
-				color: rgb(var(--gray));
+				color: gray;
 			}
+
+			.tags {
+				width: 100%;
+				margin: 0em;
+				padding: 0em;
+			}
+
+
+			.blog-item {
+				width: 100%;
+				padding: 0.5em 0.5em;
+				margin-top: 0;
+				margin-bottom: 1em;
+				margin-left: 0;
+				margin-right: 0;
+				border: 0.3em outset gray;
+			}
+
+			.blog-item li {
+				vertical-align: top;
+				padding: 0;
+				margin: 0;
+			}
+
+
+			ul.tags li.tag {
+				display: inline-block;
+				background-color: lightgray;
+				border-style: ridge;
+				padding: 0em 0.2em;
+				margin: 0em 0.3em;
+				font-weight: bold;
+				font-size: small;
+				color: grey;
+
+			}
+
+			ul.tags li.tag:first-child {
+				margin-left: 0;
+			}
+
+
+
+
+
+
 
 			@media (max-width: 720px) {
 				ul {
@@ -54,22 +96,28 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
-			<h1>Recent blog posts</h1>
 			<section>
 				<ul>
 					{
 						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.slug}/`}>
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-								<div class="tags">
-									{post.data.tags.map(tag => <span class="tag">{tag}</span>)}
-								</div>
-							</li>
+							<div class="blog-item">
+								<li>
+									<a href={`/blog/${post.slug}/`}>
+										<h4 class="title">{post.data.title}</h4>
+										<p class="date">
+											<FormattedDate date={post.data.pubDate} />
+										</p>
+									</a>
+									
+								</li>
+								<ul class="tags"> 
+										{
+											post.data.tags.map(tag => <li class="tag">{tag}</li>)
+											
+										}
+								</ul>
+							</div>
+							
 						))
 					}
 				</ul>
