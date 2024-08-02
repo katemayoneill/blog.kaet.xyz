@@ -23,11 +23,11 @@
 a {
 	text-decoration: none;
 	transition-duration: 0.3s;
-	color: black;
+	color: blue;
 }
 
 a:hover {
-	color: blue;
+	color: darkblue;
 }
 
 
