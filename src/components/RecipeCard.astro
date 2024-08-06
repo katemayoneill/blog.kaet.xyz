@@ -1,0 +1,79 @@
+---
+import { number } from "astro/zod";
+
+
+const {
+    title, 
+    prep_time, 
+    cook_time, 
+    description, 
+    serves, 
+    ingredients = [], 
+    instructions = [],
+    notes = [],
+} = Astro.props;
+
+---
+
+<div class="recipe-card">
+    <div class="intro">
+        <h1 class="recipe-title">{title}</h1>
+        <em>{description}</em>
+        <ul>
+            <li>Preparation time: {prep_time} minutes</li>
+            <li>Cooking time: {cook_time} minutes</li>
+            <li>Serves: {serves}</li>
+        </ul>
+        
+    </div>
+    <hr>
+    <div class="recipe">
+        <div class="ingredients">
+            <h2>Ingredients</h2>
+            <ul class="ingredients-list">
+                {ingredients.map(ingredient => (<li>{ingredient}</li>)) }
+            </ul>
+        </div>
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <ol class="instructions-list">
+                {instructions.map(instruction => (<li>{instruction}</li>))}
+            </ol>
+        </div>
+    </div>
+    <hr>
+    <div class="notes">
+        <h2>Notes</h2>
+        <ul class="note-list">
+            {notes.map(note => (<li>{note}</li>))}
+        </ul>
+    </div>
+</div>
+
+<style>
+
+    .intro, .recipe, .notes {
+        padding: 1em;
+        margin: 0.5em;
+    }
+
+
+    .recipe-card {
+        border: ridge;
+    }
+
+    .intro ul {
+        list-style: none;
+    }
+
+    .intro ul li {
+        display: inline-block;
+        margin: 0.5em;
+        padding: 0.5em
+    }
+
+    
+
+
+
+</style>
