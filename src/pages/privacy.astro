@@ -1,0 +1,44 @@
+---
+// src/pages/privacy.astro
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Privacy Policy - ${SITE_TITLE}`} description="Privacy policy for this blog" />
+		<style>
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p>Privacy Policy</p>
+
+            <p>This website uses Pinterest's API to display Pinterest board content.</p>
+            
+            <p>Information We Collect:</p>
+            <ul>
+                <li>We access public Pinterest board data to display pins on our website</li>
+                <li>We do not store Pinterest user data on our servers</li>
+                <li>We do not collect personal information from Pinterest users</li>
+            </ul>
+            
+            
+            <p>How We Use Information:</p>
+            <ul>
+                <li>Pinterest board content is displayed for informational purposes only</li>
+                <li>No personal data is stored or shared with third parties</li>
+            </ul>
+            
+
+            <p>Contact: kate@kaet.xyz</p>
+
+            <p>Last Updated: 21/07/25</p>
+		</main>
+		<Footer />
+	</body>
+</html>
