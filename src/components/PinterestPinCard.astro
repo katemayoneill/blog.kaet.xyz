@@ -1,0 +1,25 @@
+---
+import PinterestPin from './PinterestPin.astro';
+
+const { pinId = '' } = Astro.props;
+const PINTEREST_ACCESS_TOKEN = import.meta.env.PINTEREST_ACCESS_TOKEN;
+
+let pin = null;
+
+if (pinId) {
+    const pinResponse = await fetch(
+        `https://api.pinterest.com/v5/pins/${pinId}?pin_fields=id,link,title,description,alt_text,media,note`,
+        {
+            headers: {
+                'Authorization': `Bearer ${PINTEREST_ACCESS_TOKEN}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+    if (pinResponse.ok) {
+        pin = await pinResponse.json();
+    }
+}
+---
+
+{pin && <PinterestPin pin={pin} />}
