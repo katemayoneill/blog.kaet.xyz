@@ -1,0 +1,19 @@
+name: Deploy Blog
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with secrets
+        run: npm run build
+        env:
+          PINTEREST_API_KEY: ${{ secrets.PINTEREST_API_KEY }}
+          PINTEREST_API_TOKEN: ${{ secrets.PINTEREST_API_TOKEN }}
