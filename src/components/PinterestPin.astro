@@ -1,0 +1,56 @@
+---
+export interface Props {
+    pin: any;
+}
+const { pin } = Astro.props;
+
+let imageUrl = '';
+if (pin && pin.media?.images) {
+    const sizes = Object.keys(pin.media.images);
+    if (sizes.length > 0) {
+        imageUrl = pin.media.images[sizes[sizes.length - 1]].url;
+    }
+}
+---
+
+<div class="pin-card">
+    <a href={pin.link || `https://pinterest.com/pin/${pin.id}`} target="_blank" rel="noopener noreferrer" class="pin-link">
+        {imageUrl ? (
+            <img src={imageUrl} alt={pin.alt_text || pin.title || 'Pinterest pin'} class="pin-image" loading="lazy" />
+            ) : (
+                <div class="pin-image pin-image--placeholder"><span>No image</span></div>
+        )}
+        <div class="pin-overlay">
+            {pin.title && <h4 class="pin-title">{pin.title}</h4>}
+            {(pin.note || pin.description) && <p class="pin-description">{pin.note || pin.description}</p>}
+        </div>
+    </a>
+</div>
+
+<style>
+.pin-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.pin-image {
+    width: 100%;
+    display: block;
+    border: 1cap blue;
+}
+
+.pin-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: blue;
+    padding: 1rem;
+    transform: translateY(100%);
+}
+
+.pin-card:hover .pin-overlay {
+    \\transform: translateY(0);
+    pointer-events: auto;
+}
+</style>

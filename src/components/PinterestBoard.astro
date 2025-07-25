@@ -1,0 +1,76 @@
+---
+import PinterestPin from './PinterestPin.astro';
+
+const { boardId = '', pinCount = 20, columns = 3 } = Astro.props;
+
+const PINTEREST_ACCESS_TOKEN = import.meta.env.PINTEREST_ACCESS_TOKEN;
+
+let pinsData = [];
+let error = null;
+let debugInfo = {};
+
+if (boardId) {
+    try {
+        const pinsResponse = await fetch(
+            `https://api.pinterest.com/v5/boards/${boardId}/pins?page_size=${pinCount}&pin_fields=id,link,title,description,alt_text,media,note`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${PINTEREST_ACCESS_TOKEN}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        debugInfo.status = pinsResponse.status;
+        debugInfo.ok = pinsResponse.ok;
+        debugInfo.url = pinsResponse.url;
+
+        if (pinsResponse.ok) {
+            const pinsResult = await pinsResponse.json();
+            debugInfo.pinsResult = pinsResult;
+            pinsData = pinsResult.items || [];
+        } else {
+            error = `Pinterest API error: ${pinsResponse.status} ${pinsResponse.statusText}`;
+            debugInfo.errorText = await pinsResponse.text();
+        }
+    } catch (e) {
+        error = `Fetch error: ${e.message}`;
+        debugInfo.exception = e;
+    }
+} else {
+    error = "No boardId provided";
+}
+---
+
+{error && (
+    <div style="background:#fee;border:1px solid #fcc;padding:1rem;margin-bottom:1rem;">
+        <strong>Error loading Pinterest board:</strong> {error}
+        <pre style="font-size:0.9em;overflow-x:auto;">{JSON.stringify(debugInfo, null, 2)}</pre>
+    </div>
+)}
+
+{pinsData.length > 0 && (
+    <div class="pins-grid" data-columns={columns}>
+        {pinsData.map((pin) =>
+            pin ? <PinterestPin pin={pin} /> : null
+        )}
+    </div>
+)}
+
+<style>
+.pins-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    margin: 2rem 0;
+}
+.pins-grid[data-columns="2"] { --columns: 2; }
+.pins-grid[data-columns="3"] { --columns: 3; }
+.pins-grid[data-columns="4"] { --columns: 4; }
+@media (max-width: 900px) {
+    .pins-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    .pins-grid { grid-template-columns: 1fr; }
+}
+</style>
+
