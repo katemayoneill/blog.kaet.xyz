@@ -20,6 +20,10 @@
 	font-size: medium;
 }
 
+ul li {
+	list-style-type: "— ";
+}
+
 a {
 	text-decoration: none;
 	transition-duration: 0.3s;
