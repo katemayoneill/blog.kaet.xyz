@@ -3,7 +3,7 @@
 
 const CLIENT_ID = process.env.PINTEREST_APP_ID;
 const CLIENT_SECRET = process.env.PINTEREST_APP_SECRET;
-const REDIRECT_URI = process.env.PINTEREST_REDIRECT_URI || 'https://localhost:3000/callback';
+const REDIRECT_URI = process.env.PINTEREST_REDIRECT_URI || 'https://pinterest-integration.d4yfwhieoetip.amplifyapp.com/pinterest-callback';
 
 // Validate required environment variables
 if (!CLIENT_ID || !CLIENT_SECRET) {
