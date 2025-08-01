@@ -3,12 +3,12 @@
 
 const CLIENT_ID = process.env.PINTEREST_APP_ID;
 const CLIENT_SECRET = process.env.PINTEREST_APP_SECRET;
-const REDIRECT_URI = process.env.PINTEREST_REDIRECT_URI || 'https://pinterest-integration.d4yfwhieoetip.amplifyapp.com/pinterest-callback';
+const REDIRECT_URI = process.env.PINTEREST_REDIRECT_URI || 'https://localhost:3000/pinterest-callback';
 
 // Validate required environment variables
 if (!CLIENT_ID || !CLIENT_SECRET) {
     console.error('❌ Missing required environment variables:');
-    console.error('   PINTEREST_CLIENT_ID and PINTEREST_CLIENT_SECRET must be set');
+    console.error('   PINTEREST_APP_ID and PINTEREST_APP_SECRET must be set');
     console.error('\nYou can run this script with:');
     console.error('   PINTEREST_CLIENT_ID=your_id PINTEREST_CLIENT_SECRET=your_secret node pinterest-oauth.js');
     process.exit(1);
