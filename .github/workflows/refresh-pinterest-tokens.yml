@@ -7,6 +7,11 @@ on:
     - cron: '0 2 */25 * *'
   workflow_dispatch: # Allow manual trigger from GitHub Actions tab
 
+# Add this permissions section
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   refresh-tokens:
     runs-on: ubuntu-latest
