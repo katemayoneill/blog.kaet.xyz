@@ -1,11 +1,11 @@
 # .github/workflows/refresh-pinterest-tokens.yml
-name: Refresh Pinterest Tokens
+name: Refresh Pinterest Tokens & Update Amplify
 
 on:
   schedule:
-    # Run every 25 days at 2 AM UTC (adjust timezone as needed)
+    # Run every 25 days at 2 AM UTC
     - cron: '0 2 */25 * *'
-  workflow_dispatch: # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch: # Allow manual trigger
 
 # Add this permissions section
 permissions:
@@ -13,7 +13,7 @@ permissions:
   issues: write
 
 jobs:
-  refresh-tokens:
+  refresh-and-update:
     runs-on: ubuntu-latest
     
     steps:
@@ -29,53 +29,97 @@ jobs:
       run: npm install
       
     - name: Refresh Pinterest tokens
+      id: refresh-tokens
       env:
         PINTEREST_CLIENT_ID: ${{ secrets.PINTEREST_CLIENT_ID }}
         PINTEREST_CLIENT_SECRET: ${{ secrets.PINTEREST_CLIENT_SECRET }}
         PINTEREST_REFRESH_TOKEN: ${{ secrets.PINTEREST_REFRESH_TOKEN }}
       run: |
-        node scripts/refresh-pinterest-tokens.js
+        echo "🔄 Refreshing Pinterest tokens..."
         
-    # TODO: Add step to automatically update Amplify environment variables
-    # For now, this will output the new tokens for manual update
-    
-    - name: Create reminder issue
+        # Run the refresh script and capture output
+        node scripts/refresh-pinterest-tokens.js > token_output.txt 2>&1
+        
+        # Extract tokens from output
+        ACCESS_TOKEN=$(grep "PINTEREST_ACCESS_TOKEN=" token_output.txt | cut -d'=' -f2)
+        REFRESH_TOKEN=$(grep "PINTEREST_REFRESH_TOKEN=" token_output.txt | cut -d'=' -f2)
+        
+        # Set as output variables for next step
+        echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+        echo "refresh_token=$REFRESH_TOKEN" >> $GITHUB_OUTPUT
+        
+        # Show results
+        echo "✅ Tokens refreshed successfully!"
+        echo "Access token: ${ACCESS_TOKEN:0:20}..."
+        echo "Refresh token: ${REFRESH_TOKEN:0:20}..."
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        
+    - name: Update Amplify environment variables
+      env:
+        AMPLIFY_APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+        NEW_ACCESS_TOKEN: ${{ steps.refresh-tokens.outputs.access_token }}
+        NEW_REFRESH_TOKEN: ${{ steps.refresh-tokens.outputs.refresh_token }}
+      run: |
+        echo "🔧 Updating Amplify environment variables..."
+        
+        # Get current environment variables
+        CURRENT_ENV=$(aws amplify get-app --app-id $AMPLIFY_APP_ID --query 'app.environmentVariables' --output json)
+        
+        # Update the tokens while preserving other environment variables
+        UPDATED_ENV=$(echo $CURRENT_ENV | jq --arg access_token "$NEW_ACCESS_TOKEN" --arg refresh_token "$NEW_REFRESH_TOKEN" '
+          .PINTEREST_ACCESS_TOKEN = $access_token |
+          .PINTEREST_REFRESH_TOKEN = $refresh_token
+        ')
+        
+        # Apply the updated environment variables
+        aws amplify update-app \
+          --app-id $AMPLIFY_APP_ID \
+          --environment-variables "$UPDATED_ENV"
+          
+        echo "✅ Amplify environment variables updated!"
+        
+    - name: Trigger Amplify deployment
+      env:
+        AMPLIFY_APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+        AMPLIFY_BRANCH: ${{ secrets.AMPLIFY_BRANCH || 'main' }}
+      run: |
+        echo "🚀 Triggering new Amplify deployment..."
+        
+        # Start a new deployment
+        JOB_ID=$(aws amplify start-job \
+          --app-id $AMPLIFY_APP_ID \
+          --branch-name $AMPLIFY_BRANCH \
+          --job-type RELEASE \
+          --query 'jobSummary.jobId' \
+          --output text)
+          
+        echo "✅ Deployment started with job ID: $JOB_ID"
+        echo "🔗 Check status at: https://console.aws.amazon.com/amplify/home#/apps/$AMPLIFY_APP_ID"
+        
+    - name: Notify on success
       if: success()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const title = 'Pinterest Tokens Refreshed - Update Amplify';
-          const body = `
-          🔄 Pinterest tokens have been refreshed successfully!
-          
-          **Next Steps:**
-          1. Check the workflow logs for the new tokens
-          2. Update your Amplify environment variables:
-             - Go to Amplify Console → Your App → Environment Variables
-             - Update PINTEREST_ACCESS_TOKEN and PINTEREST_REFRESH_TOKEN
-          3. Redeploy your app
-          4. Close this issue once complete
-          
-          **Due Date:** Please complete within 24 hours
-          `;
-          
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: title,
-            body: body,
-            labels: ['pinterest', 'tokens', 'amplify']
-          });
-    
-    - name: Create failure issue
+      run: |
+        echo "🎉 Pinterest tokens updated successfully!"
+        echo ""
+        echo "✅ Tokens refreshed"
+        echo "✅ Amplify environment variables updated"  
+        echo "✅ New deployment triggered"
+        echo ""
+        echo "Your Pinterest integration will continue working seamlessly!"
+        
+    - name: Notify on failure
       if: failure()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: '🚨 Pinterest Token Refresh Failed',
-            body: 'The automated Pinterest token refresh failed. Please check the workflow logs and refresh tokens manually using `npm run pinterest-setup`.',
-            labels: ['bug', 'pinterest', 'tokens', 'urgent']
-          });
+      run: |
+        echo "❌ Automatic token refresh failed!"
+        echo ""
+        echo "Manual action required:"
+        echo "1. Check the error logs above"
+        echo "2. Run 'npm run refresh-tokens' locally"
+        echo "3. Update Amplify environment variables manually"
+        echo "4. Investigate why automation failed"
