@@ -1,0 +1,76 @@
+# .github/workflows/refresh-pinterest-tokens.yml
+name: Refresh Pinterest Tokens
+
+on:
+  schedule:
+    # Run every 25 days at 2 AM UTC (adjust timezone as needed)
+    - cron: '0 2 */25 * *'
+  workflow_dispatch: # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  refresh-tokens:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Refresh Pinterest tokens
+      env:
+        PINTEREST_CLIENT_ID: ${{ secrets.PINTEREST_CLIENT_ID }}
+        PINTEREST_CLIENT_SECRET: ${{ secrets.PINTEREST_CLIENT_SECRET }}
+        PINTEREST_REFRESH_TOKEN: ${{ secrets.PINTEREST_REFRESH_TOKEN }}
+      run: |
+        node scripts/refresh-pinterest-tokens.js
+        
+    # TODO: Add step to automatically update Amplify environment variables
+    # For now, this will output the new tokens for manual update
+    
+    - name: Create reminder issue
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const title = 'Pinterest Tokens Refreshed - Update Amplify';
+          const body = `
+          🔄 Pinterest tokens have been refreshed successfully!
+          
+          **Next Steps:**
+          1. Check the workflow logs for the new tokens
+          2. Update your Amplify environment variables:
+             - Go to Amplify Console → Your App → Environment Variables
+             - Update PINTEREST_ACCESS_TOKEN and PINTEREST_REFRESH_TOKEN
+          3. Redeploy your app
+          4. Close this issue once complete
+          
+          **Due Date:** Please complete within 24 hours
+          `;
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['pinterest', 'tokens', 'amplify']
+          });
+    
+    - name: Create failure issue
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Pinterest Token Refresh Failed',
+            body: 'The automated Pinterest token refresh failed. Please check the workflow logs and refresh tokens manually using `npm run pinterest-setup`.',
+            labels: ['bug', 'pinterest', 'tokens', 'urgent']
+          });
