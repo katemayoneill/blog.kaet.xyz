@@ -2,20 +2,10 @@
 title: 'Design Process'
 description: 'Thinking about capelets'
 pubDate: 'Jul 25 2025'
-lastUpdated: 'Jul 25 2025'
+lastUpdated: 'Aug 02 2025'
 tags: ["Blog Post"]
 ---
-import PinterestBoard from '/src/components/PinterestBoard.astro';
-import PinterestPinCard from '/src/components/PinterestPinCard.astro';
 
-This is my pinterest board. I am ppulling these images for pinterest. Not my images.
-
-<PinterestBoard 
-    boardId="397372435811290236"
-    pinCount={12}
-    columns={3}
-    showBoardInfo={true}
-/>
 
 # The design process
 
@@ -37,75 +27,103 @@ This is where you thing *what do i want this to do?*, *what problems is it going
 To do this, we use **user stories**, where you roleplay as someone who is going to interact with 
 the product and you try and figure out what they need from it.
 
-- as a user, i want to look really cool, sexy, cute.
-- as a knitter, i want something that doesn't make me want to give up.
-- as a knitter, i want to make money selling the capes.
-- as a knitter, i want the product to attract a following
-- as a user, I want a versatile garment
-- as a knitter, i want to easily procure the required materials
+```kroki type=plantuml
+"Wearer" as U
+U -> (i want to look really cool, sexy, cute)
 
-### product backlog
+"Knitter" as K
+K --> (i want to have fun knitting the product)
+K ---> (i want to make money by selling the product)
+```
 
-Now we just think of tasks that address each user story.
+### product backlog: groom and refine 🤤
 
-- Product is flattering on the body
-- Pattern uses techniques that are compatible with old fashioned machine.
-- Product is worth more that the sum of its parts.
-- Product is unlike any trending clothing item or reiteration thereof.
-- Product is versatile and wearable.
-- Product is made of materials available from local shops.
+Now we just think of tasks that address each user story and break them up into tasks that have a simpler solution.
 
-and maybe add on a few more boring things that i missed
+```kroki type=plantuml
+@startmindmap
+<style>
+node {
 
-- Product has a detailed pattern
-- Product development is well documented
+    MaximumWidth 100
+}
 
-### grooming ?
+leafNode {
+    FontColor blue
+    MaximumWidth auto
+}
 
-Let's break every tasks up into more tasks that have a simpler solution.
+arrow {
+    LineStyle 4
+    LineThickness 0.5
+}
+</style>
+*_ "i want to look cool sexy cute"
+** design flattering and unique cape
+*** research cape patterns
+**** make pinterest board of capes
+**** make ravelry album of patterns
+**** find new sources of inspiration
+**** list different ways to construct capes
+*** make pattern of existing cape
+**** trace sample cape onto paper and measure
+**** make digital sample cape pattern
 
-- Make a pattern of sample cape.
-- Take inspiration from old cape patterns.
-- Make sample pattern compatible with machine.
-- Make sample pattern more flattering.
-- Make sample pattern more unique.
-- Make pattern be relatively quick to knit.
-- Make swatches of material at various tensions.
+*_ "i want to have fun knitting this product again and again"
+** write simple pattern using techniques that are compatible with machine
+*** research techniques to avoid
+**** make list of incompatible techniques
+*** make pattern
+**** draw digital pattern with measurements
+**** make swatches or material at various gauges
+**** measure swatch and calculate pattern gauge
+**** write pattern
 
-### refinement
+*_ "i want to make money by selling the product"
+** knit cape
+** note material and labour costs
+*** measure amount of wool in each cape
+*** note how many hours are put into each cape
+** advertise product 
+*** document product development publicly
+**** publish blog posts
+**** write detailed pattern and tutorial
+*** take photos and videos of product at every stage of development</color>
+** make on online shop
 
-Now we break it down even further into easily quantifiable tasks.
+@endmindmap
 
-- make measurements of traced pattern
-- draw a vector pattern
-- research patterns that are similar to desired product
-- write a pattern that uses techniques compatible with machine
-- prepare swatches of material at various tensions
-- takes measurements of swatches and noted stitches/centimeter
-- calculate row counts and stitch numbers for pattern
-- knit prototype
-- document production
-...
+```
+### Agile Methodology
+Obviously I won't be happy with the first version so i'll be using a sort of Agile Methodology. 
+Each cycle will be a new version of the cape.
+
+```kroki type=plantuml
+@startuml
+while( happy with end product ? ) is (no)
+:plan;
+:design;
+:develop;
+:review;
+endwhile (yes);
+: deploy; 
+@enduml
+```
 
 ### milestones
 
-split the project into chunks.
-
-1. research
-
-2. initial pattern 
-
-3. knit first version
-
-4. refine pattern
-
-5. knit final version
+split the project into chunks, and give a rough timeline of when each milestone should be accomplished.
 
 
+v1: 31 August
 
+v2: 30 september
 
+v3: 31 october
 
+v4: 31 November
 
+deploy: 10 december
 ...
 
 

@@ -1,0 +1,74 @@
+---
+title: 'Cape v1.0.0.0'
+description: 'Thinking about capelets'
+pubDate: 'Aug 4 2025'
+tags: ["Blog Post"]
+---
+import PinterestBoard from '/src/components/PinterestBoard.astro';
+import PinterestPinCard from '/src/components/PinterestPinCard.astro';
+
+Recall from last post:
+```kroki type=plantuml
+@startuml
+while( happy with end product ? ) is (no)
+:plan;
+:design;
+:develop;
+:review;
+endwhile (yes);
+: deploy; 
+@enduml
+```
+
+I want to go through this process for each version. I'm going to try split up each step into a sprint :D.
+
+# Sprint 1: 4 August
+
+```kroki type=plantuml
+@startmindmap
+<style>
+node {
+
+    MaximumWidth 100
+}
+
+leafNode {
+    FontColor blue
+    MaximumWidth auto
+}
+
+arrow {
+    LineStyle 4
+    LineThickness 0.5
+}
+
+</style>
+* plan
+** design flattering and unique cape
+*** research cape patterns
+**** make pinterest board of capes
+**** make ravelry album of patterns
+**** find new sources of inspiration
+**** list different ways to construct capes
+*** make pattern of existing cape
+**** trace sample cape onto paper and measure
+**** make digital sample cape pattern
+```
+
+## Make pinterest board of capes
+
+<PinterestBoard 
+    boardId="397372435811290236"
+    pinCount={12}
+    columns={3}
+    showBoardInfo={true}
+/>
+
+## Make digital pattern of existing cape
+
+![Cape Pattern](/pattern.png)
+![Hood Pattern](/hood.png)
+
+
+\* measurements in cm
+
