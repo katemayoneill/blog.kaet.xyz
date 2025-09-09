@@ -1,29 +1,14 @@
 ---
-title: 'Cape v1.0.0.0'
-description: 'Thinking about capelets'
-pubDate: 'Aug 4 2025'
+title: 'Cape v1.0'
+description: 'first knit cape'
+pubDate: 'Aug 26 2025'
 tags: ["Blog Post"]
 ---
 import PinterestBoard from '/src/components/PinterestBoard.astro';
 import PinterestPinCard from '/src/components/PinterestPinCard.astro';
 
-Recall from last post:
-```kroki type=plantuml
-@startuml
-while( happy with end product ? ) is (no)
-:plan;
-:design;
-:develop;
-:review;
-endwhile (yes);
-: deploy; 
-@enduml
-```
 
-I want to go through this process for each version. I'm going to try split up each step into a sprint :D.
-
-# Sprint 1: 4 August
-
+# Sprint 3: 26 August
 ```kroki type=plantuml
 @startmindmap
 <style>
@@ -41,34 +26,82 @@ arrow {
     LineStyle 4
     LineThickness 0.5
 }
-
 </style>
-* plan
-** design flattering and unique cape
-*** research cape patterns
-**** make pinterest board of capes
-**** make ravelry album of patterns
-**** find new sources of inspiration
-**** list different ways to construct capes
-*** make pattern of existing cape
-**** trace sample cape onto paper and measure
-**** make digital sample cape pattern
+
+*_ "i want to make money by selling the product"
+** knit cape
+** note material and labour costs
+*** measure amount of wool in each cape
+*** note how many hours are put into each cape
+** advertise product 
+*** document product development publicly
+**** publish blog posts
+**** write detailed pattern and tutorial
+*** take photos and videos of product at every stage of development
+** make on online shop
+
+@endmindmap
+
 ```
+## Incompatible techniques
 
-## Make pinterest board of capes
+After knitting the first cape, I cna now write the actual pattern for the first version of the cape.
 
-<PinterestBoard 
-    boardId="397372435811290236"
-    pinCount={12}
-    columns={3}
-    showBoardInfo={true}
-/>
+## Pattern v1
 
-## Make digital pattern of existing cape
+### hood
 
-![Cape Pattern](/pattern.png)
-![Hood Pattern](/hood.png)
+Put 42 needles on either side of needle 0 into working position. Do this on front and back beds (168 needles total).
+Move the front bed one translation using racking switch so that the needles on front bed are no longer facing the needles on back bed.
 
+Tension 1 and red keys pressed, pass the cam boxes right to left. Insert the teeth of the mounting comb without the 
+steel wire so that the wool passes between the teeth of the mounting comb. Attach the steel wire. 
+Move the front bed bed to original position so that front and back bed needles are facing eachother.
 
-\* measurements in cm
+We will knit the hood in semi-circular. 
+
+> # Semi circular knitting
+> The needle position is the same as for that of circular knitting. The only difference is that an opening is provided for at the side.
+> The casting on is similar to the closed or open circular casting on and the knitting is obtained as follows:
+>
+> Cam boxes to the left.
+> - Back cam box, keys cancelled / Front cam box red key. Knit two rows.
+> - Back cam box red key / Front cam box, keys cancelled. Knit two rows.
+>
+> The opening will be to the right.
+- *Singer MK1 Manual p.22*
+
+In order to achieve a slip stitch edge, put needle on open side into holding position when knitting the 1st row of front, back passes.
+Put needle back into working position before 2nd pass, making sure that working yarn is passed under the last needle.
+
+Knit 144 rounds, counter will read 288.
+
+Switch to waste yarn of contrasting colour. Knit 20 rounds with green keys pressed on front and back cam boxes, remove work from machine.
+
+Pick up 144 stitches along opening edge of hood; 36 needles each side of needle 0 on front and back beds.
+Knit 20 rounds in circular, counter reads 40.
+
+Cast off.
+
+### Shoulders
+
+Pick up the last row of main yarn, 168 stitches total; 42 needles each side on front and back beds. 
+Start with picking up the 2 stitches at the bottom of the hood opening and placing them on needle 0 of the front bed.
+
+Reset counter to 0, knit 85 rounds. Increase by 4 stitches, one on left and right hand sides on each bed on following rounds: 1, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 21, 23, 24, 26, 28, 30, 32, 34, 35, 37, 39, 41, 43, 45, 46, 48, 50, 52, 54, 56, 57, 59, 61, 63, 65, 67, 68, 70, 72, 74, 76, 78, 79, 81, 83, 85.
+
+### Body
+
+Cancel keys on back cam box, switch to waster yarn and knit 15 rows on front bed. Drop work off of front bed. 
+
+knit 60 rows.
+
+Switch to 4x4 rib. Knit 12 rows decreasing 2 stitches every other row.
+
+Knit 8 rows, decreasing 4 stitches every other row.
+
+Cast off.
+
+Pick up the stitches that were dropped off the machine and repeat the same steps.
+
 
